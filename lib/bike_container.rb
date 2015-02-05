@@ -21,7 +21,7 @@ module BikeContainer
 	end
 
 	def dock(bike)
-    raise "Station is full" if full?
+    	raise "holder is full" if full?
 		bikes << bike
 	end
 
@@ -30,7 +30,7 @@ module BikeContainer
 	end
 
 	def full?
-		bike_count == @capacity
+		bike_count == capacity
 	end
 
 	def available_bikes
