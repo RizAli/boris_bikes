@@ -3,31 +3,33 @@ require 'van'
 describe Van do 
   
   let (:van)          { Van.new({capacity: 20}) }
+  let(:bike)          {double :bike, {broken?: false}}
+  let(:broken_bike)   {double :bike, {broken?: true}}
+  let(:fixed_bike)    {double :bike, {fix!: true}}
   
+
+
+
   it 'can have a custom capacity' do
     expect(van.capacity).to eq(20)
   end
 
 
-  it 'can collect broken bikes from a station' do
-    broken_bike = double :bike, broken?: true
-    old_street = double :station, broken_bikes: [broken_bike]
+  it 'can collect broken bikes from the station' do
 
-    expect(old_street).to receive(:release).with(broken_bike)
-    van.collect_broken_bikes_from(old_street)
-
-    expect(van.broken_bikes).to eq [broken_bike]
+    expect(van.broken_bikes.count).to eq(0)
+    van.dock(broken_bike)
+    expect(van.broken_bikes.count).to eq(1)
 
   end
 
-  it 'can drop the broken_bikes to garage' do 
-    broken_bike = double :bike, broken?: true
-    garage = double :garage, broken_bikes: [broken_bike]
+  it 'can drop fixed bikes to the station' do 
+    #have fixed bikes
 
-    expect(garage).to receive(:release).with(broken_bike)
-    van.drop_broken_bikes_to(garage)
+    expect(van.fixed_bikes.count).to eq(0)
+    van.dock(fixed_bike)
+    expect(van.fixed_bikes.count).to eq(1)
 
-    expect(van.broken_bikes).to eq [broken_bike]
 
   end
 
@@ -35,28 +37,4 @@ describe Van do
 
 
 
-
-
-
-  # it 'can collect broken bikes from a station' do
-  #   broken_bike = double :bike, broken?: true
-  #   old_street  = double :station, broken_bikes: [broken_bike]
-
-
-  #   expect(old_street).to receive(:release).with(broken_bike)
-  #   van.collect_broken_bikes_from(old_street)
-
-  #   expect(van.broken_bikes).to eq [broken_bike]
-  # end
-
-  # it 'can drop the broken bikes to the garage' do 
-  #   broken_bike = double :bike, broken?: true
-  #   garage = double :garage, broken_bikes: [broken_bike]
-    
-  #   expect(garage).to receive(:release).with(broken_bike)
-  #   van.drop_broken_bikes_to(garage)
-
-  #   expect(van.broken_bike).to eq [broken_bike]
-  # end
 end
-
